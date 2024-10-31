@@ -1,3 +1,8 @@
+"""
+Experimenting with a modified two-square Polybius cipher.
+2024.10.29
+"""
+
 import argparse
 from datetime import datetime
 
@@ -126,6 +131,13 @@ def main():
     # encode/decode text
     text = args.text
     transformed_text = cipher.transform(text)
+    
+    # # print cipherboxes
+    # print("Cipherbox 1:")
+    # cipher.print_matrix(cipher.cipherbox1)
+    # print("Cipherbox 2:")
+    # cipher.print_matrix(cipher.cipherbox2)
+
     # print results
     print(f"Transformed text: {transformed_text}")
 
