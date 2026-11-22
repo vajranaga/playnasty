@@ -1,35 +1,65 @@
 # Playnasty Cipher
 
-This script implements a two-square Playfair Cipher variation, nicknamed Playnasty Cipher. It allows encoding and decoding of text based on a date key.
+A two-square Polybius cipher variation, nicknamed Playnasty Cipher. It encodes and decodes text
+based on a date key.
 
-The 6-digit date key is used to 'spin' the rows and columns of the Polybius square the appropriate amount of times, each index of the date used for the respective row or column index. That is how the square is 'shuffled'. First square (for odd indexed characters) is 'spun' right and down, the second square (for even characters in the string) is 'spun' left and up.
+The 6-digit date key (YYMMDD) 'spins' the rows and columns of a 6x6 Polybius square (A-Z, 0-9):
+each digit of the date spins the row or column with the same index. That is how the square is
+'shuffled'. The first square (for characters at even indexes: 1st, 3rd, ...) is spun right and
+down; the second square (2nd, 4th, ...) is spun left and up. A digit of 6-9 leaves its row or
+column unspun.
 
-The transformation uses the (row, col) index of the input character and returns the character found at (col, row).
+The transformation takes the (row, col) of the input character and returns the character at
+(col, row) in the same square. So the same command both encodes and decodes.
 
-#### NOT FOR SERIOUS ENCRYPTION, JUST A TOY EXAMPLE TO PLAY WITH THE CONCEPTS
+**Not for serious encryption: just a toy example to play with the concepts.**
 
 ## Usage
 
-To use the script, run the following command:
-
 ```sh
-python play_nasty.py --text "YOUR TEXT HERE" --date YYMMDD
+uv run playnasty --text "YOUR TEXT HERE" --date YYMMDD
 ```
 
-## Arguments
-
-- `--text`: The text to encode or decode. This argument is required.
-- `--date`: The date key in the format YYMMDD. This argument is optional and defaults to the current date.
+- `--text` (required): the text to encode or decode. Letters, digits and spaces only; spaces
+  are dropped, lowercase is upper-cased, and an odd length is padded with `X`.
+- `--date` (optional, default today): the key as exactly 6 digits, `YYMMDD`, and it must be a
+  real calendar date. `241301` or `24-11-22` is rejected with an error.
+- `--show-boxes`: also print both cipher squares.
 
 ## Example
 
 ```sh
-python play_nasty.py --text "HELLO WORLD" --date 230101
+uv run playnasty --text "HELLO WORLD" --date 230101
 ```
 
-This will encode or decode the text "HELLO WORLD" using the date key "230101". The output should be:
-```sh
+Output:
+
+```
 Transformed text: ZEBNO6OTB9
+```
+
+Run it again on `ZEBNO6OTB9` with the same date to get `HELLOWORLD` back.
+
+## As a library
+
+```python
+from datetime import date
+
+from playnasty import PlaynastyCipher, parse_date
+
+cipher = PlaynastyCipher(parse_date("230101"))  # or PlaynastyCipher(date(2023, 1, 1))
+cipher.transform("HELLO WORLD")  # 'ZEBNO6OTB9'
+```
+
+## Development
+
+Toolchain: `~/Code/local/templates/STANDARDS.md`. Before committing, run:
+
+```sh
+uv run ruff check
+uv run ruff format --check
+uv run ty check
+uv run pytest
 ```
 
 ## License

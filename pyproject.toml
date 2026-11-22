@@ -1,14 +1,41 @@
 [project]
 name = "playnasty"
 version = "0.1.0"
-description = "Add your description here"
+description = "Toy two-square Polybius cipher keyed by a YYMMDD date. Not for real encryption."
 readme = "README.md"
-requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.14"
 dependencies = []
 
-[tool.uv]
-dev-dependencies = [
-    "jupyterlab>=4.3.0",
-    "notebook>=7.0.7",
-    "numpy>=2.1.2",
-]
+[project.scripts]
+playnasty = "playnasty.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.15", "ty>=0.0.1a1"]
+
+[build-system]
+requires = ["uv_build>=0.9,<1"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100  # target-version comes from requires-python
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "N", "UP", "B", "A", "C4", "SIM", "PTH", "RET", "S", "PERF", "PL",
+          "RUF"]
+ignore = ["PLR2004", "PLR0913", "S603", "S607"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "PLR2004", "PLC0415"]
+
+[tool.ruff.format]
+quote-style = "double"
+docstring-code-format = true
+
+[tool.ty.terminal]
+error-on-warning = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-markers"]

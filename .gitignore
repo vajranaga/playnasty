@@ -1,10 +1,43 @@
-# Python-generated files
+# Python bytecode and native builds
 __pycache__/
-*.py[oc]
-build/
-dist/
-wheels/
-*.egg-info
-
+*.py[cod]
+*.so
 # Virtual environments
-.venv
+.venv/
+venv/
+env/
+# Packaging and build outputs
+dist/
+build/
+*.egg-info/
+.eggs/
+wheels/
+# Tool caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ty_cache/
+.cache/
+.hypothesis/
+.tox/
+.nox/
+# Coverage and profiling
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+*.prof
+# Notebooks
+.ipynb_checkpoints/
+# Local environment files: they can hold secrets
+.env
+.env.*
+# Editors and operating systems: local to each machine
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Project outputs: add them below
